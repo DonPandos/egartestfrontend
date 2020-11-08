@@ -24,8 +24,7 @@ class AssetCostTableItem extends React.Component {
     
     updateItemInDb(e, field) {
         console.log('itemid: ' + e.target.value);
-        // if(field == 'assetId') value = this.props.assetList.find(el => el.name === e.target.value).id;
-        //
+
         fetch('http://localhost:8080/api/egar/assetcost/update', {
             method: 'POST',
             headers: {
@@ -43,11 +42,9 @@ class AssetCostTableItem extends React.Component {
 
     render() {
         if(!this.state.isReady) return null;
-        //console.log(this.props.assetList);
         return (
             <tr>
                 <td><input type="date" defaultValue={moment(new Date(this.props.date)).format('YYYY-MM-DD')} onBlur={e => this.updateItemInDb(e, 'date')} max={moment(new Date()).format('YYYY-MM-DD')}></input></td>
-                {/* <td><input type="text" defaultValue={this.props.assetList.find(el => el.id === this.state.assetId).name} onBlur={this.updateItemInDb}></input></td> */}
                 <td>
                     <select defaultValue={this.state.assetId} onChange={e => this.updateItemInDb(e, 'assetId')}>
                         {this.props.assetList.map((item, i) => {
