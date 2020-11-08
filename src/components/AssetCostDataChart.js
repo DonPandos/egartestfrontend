@@ -6,11 +6,12 @@ class AssetCostDataChart extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            data: [{date: '', cost: ''}]
+            data: [{date: '', cost: ''}],
+            assetId: ''
         }
     }
 
-    loadData = (event) => {
+    loadData = (assetId) => {
         fetch('http://localhost:8080/api/egar/assetcost/date-to-cost-chart-data', {
             method: 'POST',
             headers: {
@@ -18,7 +19,7 @@ class AssetCostDataChart extends React.Component {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                assetId: event.target.value
+                assetId: assetId
             })
         })
         .then(res => res.json())
@@ -29,11 +30,16 @@ class AssetCostDataChart extends React.Component {
                     return a.date - b.date;
                 })
                 this.setState({
-                    data: data
+                    data: data,
+                    assetId: assetId
                 })
               
             }
         )
+    }
+
+    componentDidMount() {
+        this.loadData(this.state.assetId)
     }
 
     render() {
@@ -46,7 +52,7 @@ class AssetCostDataChart extends React.Component {
         return (
         <div>
             <label htmlFor="date">Выберите ценную бумагу для отрисовки графика: </label>
-            <select id="assetId" name="assetId" onChange={this.loadData}>
+            <select id="assetId" name="assetId" onChange={e => this.loadData(e.target.value)}>
                 <option selected disabled hidden style={{display: 'none'}} value=''></option>
                 {this.props.assetList.map((item, i) => {
                     return (<option value={item.id}>{item.name}</option>);

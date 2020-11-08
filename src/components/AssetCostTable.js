@@ -25,6 +25,7 @@ class AssetCostTable extends React.Component {
                 assetId: ''  
             }]
         }
+        this.child = React.createRef();
     }
 
     componentDidMount() {
@@ -37,6 +38,7 @@ class AssetCostTable extends React.Component {
             showAssetCostAddModal: !this.state.showAssetCostAddModal,
             reloadChartData: true
         });
+        this.child.current.loadData(this.child.current.state.assetId);
     }
 
     handleAssetAddModal = () => {
@@ -95,7 +97,7 @@ class AssetCostTable extends React.Component {
                 </table>
                 <button onClick={this.handleAssetCostAddModal} className="button">Добавить запись в таблицу</button>
                 <button onClick={this.handleAssetAddModal} className="button">Добавить ценную бумагу</button> <br></br>
-                <AssetCostDataChart assetList={this.state.assetList}/>
+                <AssetCostDataChart assetList={this.state.assetList} ref={this.child}/>
             </div>
         );
     }
